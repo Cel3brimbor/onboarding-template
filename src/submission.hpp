@@ -81,15 +81,14 @@ void apply_stencil(const Grid& old_grid, Grid& new_grid)
     }
     else 
     {
-      for(std::size_t j = 0; j < cols; j++)
-      {
-        new_grid(i,0) = old_grid(i,0);
+      new_grid(i,0) = old_grid(i,0);
+      new_grid(i,cols-1) = old_grid(i,cols-1);
 
+      for(std::size_t j = 1; j < cols-1; j++)
+      {
         new_grid(i,j) = 0.5 * old_grid(i,j) +
                         0.125 * (old_grid(i-1,j) + old_grid(i+1,j) +
                                  old_grid(i,j-1) + old_grid(i,j+1));
-        
-        new_grid(i,cols-1) = old_grid(i,cols-1);
       }
     }
   }
