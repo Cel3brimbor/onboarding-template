@@ -56,43 +56,40 @@ void apply_stencil(const Grid& old_grid, Grid& new_grid)
   const std::size_t cols = old_grid.get_col_size();
 
   //copy boundary rows
-  for(std::size_t j = 0; j < cols; j++)
-  {
-    new_grid(0,j) = old_grid(0,j);
-    new_grid(rows - 1, j) = old_grid(rows - 1, j);
-  }
+  // for(std::size_t j = 0; j < cols; j++)
+  // {
+  //   new_grid(0,j) = old_grid(0,j);
+  //   new_grid(rows - 1, j) = old_grid(rows - 1, j);
+  // }
 
-  //copy boundary columns
-  for(std::size_t i = 0; i < rows; i++)
-  {
-    new_grid(i,0) = old_grid(i,0);
-    new_grid(i,cols-1) = old_grid(i,cols-1);
-  }
+  // //copy boundary columns
+  // for(std::size_t i = 0; i < rows; i++)
+  // {
+  //   new_grid(i,0) = old_grid(i,0);
+  //   new_grid(i,cols-1) = old_grid(i,cols-1);
+  // }
 
   //apply formula to inner cells
   for(std::size_t i = 0; i < rows; i++)
   {
-    for(std::size_t j = 0; j < cols; j++)
+    if(i == 0 || i == rows-1)
     {
-      if(i == 0 || i == rows-1)
+      for(std::size_t j = 0; j < cols; j++)
       {
-        for(std::size_t j = 0; j < cols; j++)
-        {
-          new_grid(i,j) = old_grid(i,j);
-        }
+        new_grid(i,j) = old_grid(i,j);
       }
-      else if(j == 0 || j == cols-1)
+    }
+    else 
+    {
+      for(std::size_t j = 0; j < cols; j++)
       {
-        for(std::size_t i = 0; i < rows; i++)
-        {
-          new_grid(i,j) = old_grid(i,j);
-        }
-      }
-      else
-      {
+        new_grid(i,0) = old_grid(i,0);
+
         new_grid(i,j) = 0.5 * old_grid(i,j) +
                         0.125 * (old_grid(i-1,j) + old_grid(i+1,j) +
-                                old_grid(i,j-1) + old_grid(i,j+1));
+                                 old_grid(i,j-1) + old_grid(i,j+1));
+        
+        new_grid(i,cols-1) = old_grid(i,cols-1);
       }
     }
   }
