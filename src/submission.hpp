@@ -70,13 +70,30 @@ void apply_stencil(const Grid& old_grid, Grid& new_grid)
   }
 
   //apply formula to inner cells
-  for(std::size_t i = 1; i < rows-1; i++)
+  for(std::size_t i = 0; i < rows; i++)
   {
-    for(std::size_t j = 1; j < cols-1; j++)
+    for(std::size_t j = 0; j < cols; j++)
     {
-      new_grid(i,j) = 0.5 * old_grid(i,j) +
-                      0.125 * (old_grid(i-1,j) + old_grid(i+1,j) +
-                               old_grid(i,j-1) + old_grid(i,j+1));
+      if(i == 0 || i == rows-1)
+      {
+        for(std::size_t j = 0; j < cols; j++)
+        {
+          new_grid(i,j) = old_grid(i,j);
+        }
+      }
+      else if(j == 0 || j == cols-1)
+      {
+        for(std::size_t i = 0; i < rows; i++)
+        {
+          new_grid(i,j) = old_grid(i,j);
+        }
+      }
+      else
+      {
+        new_grid(i,j) = 0.5 * old_grid(i,j) +
+                        0.125 * (old_grid(i-1,j) + old_grid(i+1,j) +
+                                old_grid(i,j-1) + old_grid(i,j+1));
+      }
     }
   }
 }
